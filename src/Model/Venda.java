@@ -1,7 +1,10 @@
+package Model;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import Controller.*;
 
 public class Venda {
     private Vendedor vendedor;
@@ -91,6 +94,7 @@ public class Venda {
     }
 
     public List<Venda> getVendas() {
+        if (vendas.isEmpty()) throw new NullPointerException("Lista de vendas vazia");
         return vendas;
     }
 
@@ -98,9 +102,9 @@ public class Venda {
         vendas.add(venda);
     }
     public String mostrarVenda(){
-        return "Vendedor: "+vendedor.getNome()+"\nCliente: "+cliente.getNome()
-                +"\nCódigo produto: "+produto.getCodigoProduto()+"\nNome do Produto: "+produto.getNome()+"\nPreço unitário: "+FormataValores.formataPreco(produto.getPreco())+
-                "\nQuantidade: "+quantidade+"\nValor total da compra: "+FormataValores.formataPreco(totalCompra);
+        return "Model.Vendedor: "+vendedor.getNome()+"\nModel.Cliente: "+cliente.getNome()+"\nData da compra: "+dataCompra
+                +"\nCódigo produto: "+produto.getCodigoProduto()+"\nNome do Model.Produto: "+produto.getNome()+"\nPreço unitário: "+ FormataValores.formataPreco(produto.getPreco())+
+                "\nQuantidade: "+quantidade+"\nValor total da compra: "+ FormataValores.formataPreco(totalCompra);
 
     }
 }

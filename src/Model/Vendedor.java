@@ -1,6 +1,7 @@
+package Model;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Vendedor extends Pessoa{
 
@@ -19,12 +20,13 @@ public class Vendedor extends Pessoa{
     }
 
     public List<Vendedor> getVendedores() {
+        if (vendedores.isEmpty())throw new NullPointerException("Lista de vendedores vazia");
         return vendedores;
     }
 
     public void adicionarVendedor(Vendedor vendedor){
         for (Vendedor v:vendedores) {
-            if (v.getCpf().equals(vendedor.getCpf())||v.getEmail().equals(vendedor.getEmail())) throw new IllegalArgumentException("Cliente já cadastrado");
+            if (v.getCpf().equals(vendedor.getCpf())||v.getEmail().equals(vendedor.getEmail())) throw new RuntimeException("Vendedor já cadastrado");
         }
         vendedores.add(vendedor);
     }

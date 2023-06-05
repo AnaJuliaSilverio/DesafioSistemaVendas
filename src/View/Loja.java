@@ -1,9 +1,17 @@
+package View;
+
+import Controller.FormataValores;
+import Controller.LojaController;
+import Model.Cliente;
+import Model.Produto;
+import Model.Vendedor;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
 
-public class LojaT {
+public class Loja {
     private Scanner sc = new Scanner(System.in);
     private static final String nomeLoja = "Master Lojas";
     private HashMap<String,String> opcoesTipoMenu;
@@ -14,7 +22,7 @@ public class LojaT {
     private Vendedor vendedor;
     private int opcao;
 
-    public LojaT() {
+    public Loja() {
         inicializarMenu();
     }
 
@@ -26,8 +34,8 @@ public class LojaT {
         opcoesTipoMenu.put("4","Sair");
 
         opcoesTipoMenuVendedor = new HashMap<>();
-        opcoesTipoMenuVendedor.put("1","Cadastrar Produto");
-        opcoesTipoMenuVendedor.put("2","Atualizar Produto");
+        opcoesTipoMenuVendedor.put("1","Cadastrar Model.Produto");
+        opcoesTipoMenuVendedor.put("2","Atualizar Model.Produto");
         opcoesTipoMenuVendedor.put("3","Listar Vendas");
         opcoesTipoMenuVendedor.put("4","Listar Vendedores");
         opcoesTipoMenuVendedor.put("5","Listar Clientes");
@@ -50,7 +58,7 @@ public class LojaT {
                 for (String chave:listaExibir.keySet()) {
                     System.out.println(chave+"-"+listaExibir.get(chave));
                 }
-                opcao = lojaController.verificaOpcaoMenu(sc.nextLine(),opcoesTipoMenu);
+                opcao = lojaController.verificaOpcaoMenu(sc.nextLine(),listaExibir);
                 break;
             }catch (IllegalArgumentException erro){
                 System.out.println(erro.getMessage());
@@ -75,6 +83,7 @@ public class LojaT {
                     case 3 -> {
                         System.out.println("Digite seu email: ");
                         String email = sc.next();
+                       FormataValores.verificaEmail(email);
                         if (lojaController.verificaCredencial(email) instanceof Cliente){
                             cliente = (Cliente) lojaController.verificaCredencial(email);
                             menuFluxoCliente();
@@ -83,13 +92,14 @@ public class LojaT {
                             vendedor = (Vendedor)  lojaController.verificaCredencial(email);
                             menuFluxoVendedor();
                         }
-
                     }
                     case 4->exit(0);
                 }
                 break;
-            }catch (IllegalArgumentException|NullPointerException erroOpcaoMenu){
-                System.out.println(erroOpcaoMenu.getMessage());
+            }catch (RuntimeException erro){
+                System.out.println(erro.getMessage());
+                sc.nextLine();
+                menuPrincipal();
             }
         }
     }
@@ -97,37 +107,41 @@ public class LojaT {
     public void menuFluxoCliente() {
         vendedor = lojaController.turnoDaVez();
         sc.nextLine();
-        mostrarOpcoes(opcoesTipoMenuCliente);
         System.out.println("Ola sou o(a) " + vendedor.getNome() + ",serei responsável pela sua venda!");
         while (true){
+            mostrarOpcoes(opcoesTipoMenuCliente);
             try {
                 switch (opcao) {
                     case 1 -> lojaController.listarProdutos();
                     case 2 -> {
                         Produto produto;
                         int quantidade;
-
                         System.out.println("Digite o código do produto: ");
                         produto = lojaController.consultarProduto(sc.nextInt());
                         System.out.println("Quantas unidade de " + produto.getNome()+ " deseja comprar?");
                         quantidade = sc.nextInt();
                         sc.nextLine();
                         lojaController.vender(vendedor, cliente, produto, quantidade);
-
+                        lojaController.listarVendas();
                     }
                     case 3->menuPrincipal();
                     case 4-> exit(0);
                 }
-                break;
+                if (continuar()) menuFluxoCliente();
+                else exit(0);
+
             }catch (NullPointerException | IllegalArgumentException eror){
+                sc.nextLine();
                 System.out.println(eror.getMessage());
             }
         }
 
     }
     public void menuFluxoVendedor(){
-        mostrarOpcoes(opcoesTipoMenuVendedor);
+        sc.nextLine();
+
         while (true){
+            mostrarOpcoes(opcoesTipoMenuVendedor);
             try {
                 switch (opcao) {
                     case 1 -> lerInformacoesProduto();
@@ -139,62 +153,67 @@ public class LojaT {
                         lojaController.atualizaQtdProduto(quantidade, codigo);
                     }
                     case 3 -> {
-                        System.out.println("------------------LISTA DE VENDEDAS------------------");
 
                         lojaController.listarVendas();
                     }
                     case 4 -> {
-                        System.out.println("------------------LISTA DE VENDEDORES------------------");
+
                         lojaController.listarVendedores();
                     }
                     case 5 -> {
-                        System.out.println("------------------LISTA DE CLIENTES------------------");
                         lojaController.listarClientes();
                     }
                     case 6 -> {
                         System.out.println("Digite o cpf do cliente desejado");
-                        lojaController.comprasPorCliente(sc.next());
+                        String cpf = sc.next();
+                        FormataValores.validaCPF(cpf);
+                        lojaController.comprasPorCliente(cpf);
                     }
                     case 7 -> {
                         System.out.println("Digite o email do vendedor desejado");
-                        lojaController.comprasPorVendedor(sc.next());
+                        String email = sc.next();
+                        FormataValores.verificaEmail(email);
+                        lojaController.comprasPorVendedor(email);
                     }
                     case 8 -> {
-                        System.out.println("------------------Listar Estoque------------------");
+                        System.out.println("------------------Listar Model.Estoque------------------");
                         lojaController.exibirEstoque();
                     }
                     case 9-> menuPrincipal();
                     case 10-> exit(0);
                 }
-                break;
-            }catch (NullPointerException error){
+                if (continuar()) menuFluxoVendedor();
+                else exit(0);
+            }catch (IllegalArgumentException error){
+                sc.nextLine();
                 System.out.println(error.getMessage());
             }
         }
     }
 
     public Cliente lerInformacoesCliente(){
-        cliente = new Cliente();
-        System.out.println("------------CADASTRAR CLIENTE------------------");
-        System.out.println("Digite seu nome: ");
-        cliente.setNome(FormataValores.formataNome(sc.nextLine()));
-        System.out.println("Digite seu CPF: ");
-        cliente.setCpf(FormataValores.formataCPF(sc.next()));
-        System.out.println("Digite seu email: ");
-        cliente.setEmail( sc.next());
-        System.out.println("Digite sua idade: ");
-        cliente.setIdade( sc.nextInt());
-        sc.nextLine();
+
+            cliente = new Cliente();
+            System.out.println("------------CADASTRAR CLIENTE------------------");
+            System.out.println("Digite seu nome: ");
+            cliente.setNome(FormataValores.formataNome(sc.nextLine()));
+            System.out.println("Digite seu CPF: ");
+            cliente.setCpf(sc.next());
+            System.out.println("Digite seu email: ");
+            cliente.setEmail( sc.next());
+            System.out.println("Digite sua idade: ");
+            cliente.setIdade( sc.nextInt());
+
         return cliente;
     }
 
-    public Vendedor lerInformacoesVendedor(){
+    public Vendedor lerInformacoesVendedor() throws IllegalArgumentException{
         vendedor = new Vendedor();
         System.out.println("------------CADASTRAR VENDEDOR------------------");
         System.out.println("Digite seu nome: ");
-        vendedor.setNome(sc.next());
+        vendedor.setNome(FormataValores.formataNome(sc.nextLine()));
         System.out.println("Digite seu CPF: ");
-        vendedor.setCpf(sc.next());
+        vendedor.setCpf(FormataValores.formataCPF(sc.next()));
         System.out.println("Digite seu email: ");
         vendedor.setEmail( sc.next());
         System.out.println("Digite sua idade: ");
@@ -208,14 +227,29 @@ public class LojaT {
         System.out.println("Digite o nome do produto: ");
         String nome = sc.nextLine();
         System.out.println("Digite a descricao: ");
-        String descricao = sc.next();
+        String descricao = sc.nextLine();
         System.out.println("Digite a categoria: ");
-        String categoria = sc.next();
+        String categoria = sc.nextLine();
         System.out.println("Digite a quantidade: ");
         int quantidade = sc.nextInt();
         System.out.println("Digite o preço: ");
         double preco = sc.nextDouble();
-        lojaController.cadastrarNovoProduto(nome,preco,descricao,categoria,quantidade);
+        lojaController.cadastrarNovoProduto(FormataValores.formataNome(nome),preco,descricao,categoria,quantidade);
+    }
+
+    public boolean continuar(){
+        System.out.println("Deseja continuar?s-sim n-não");
+        while (true){
+            switch (sc.next()) {
+                case "s" -> {
+                    return true;
+                }
+                case "n" -> {
+                    return false;
+                }
+                default -> System.out.println("Opção inválida!");
+            }
+        }
     }
 
 }

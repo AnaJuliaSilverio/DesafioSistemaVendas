@@ -1,7 +1,11 @@
+package Controller;
+
+import Model.*;
+
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
-
+import View.*;
 public class LojaController {
     private Cliente clientesController=new Cliente();
     private Scanner sc = new Scanner(System.in);
@@ -14,32 +18,24 @@ public class LojaController {
         IniciarPrograma iniciarPrograma= new IniciarPrograma(vendedorController,clientesController);
     }
 
-    public int verificaOpcaoMenu(String opcao, HashMap<String,String> menu){
+    public int verificaOpcaoMenu(String opcao, HashMap<String,String> menu) throws IllegalArgumentException{
         for (String op:menu.keySet()) {
             if (op.equals(opcao)||menu.get(op).equals(opcao)) return Integer.parseInt(op);
         }
         throw new IllegalArgumentException("Por favor digite uma opção válida");
     }
     public void cadastrarCliente(Cliente cliente){
-        try {
             clientesController.adicionarCliente(cliente);
-        }catch (NullPointerException erro){
-            System.out.println("ERRO AO CADASTRAR CLIENTE");
-        }
     }
 
     public void cadastrarVendedor(Vendedor vendedor){
-        try {
-            vendedorController.adicionarVendedor(vendedor);
-        }catch (NullPointerException erro){
-            System.out.println("ERRO AO CADASTRAR VENDEDO");
-        }
+        vendedorController.adicionarVendedor(vendedor);
     }
 
-    public Pessoa verificaCredencial(String email){
+    public Pessoa verificaCredencial(String email) throws NullPointerException{
         if (clientesController.procuraClienteEmail(email)!=null) return clientesController.procuraClienteEmail(email);
         else if (vendedorController.procuraVendedorEmail(email)!=null) return vendedorController.procuraVendedorEmail(email);
-        else return null;
+        else throw new NullPointerException("Pessoa não cadastrada!");
     }
 
     public void cadastrarNovoProduto(String nome, double preco, String descricao, String categoria,int quantidade){
@@ -67,7 +63,7 @@ public class LojaController {
         throw new NullPointerException("Produto não está no estoque");
     }
 
-    public void vender(Vendedor vendedor,Cliente cliente,Produto produto,int quantidade){
+    public void vender(Vendedor vendedor, Cliente cliente, Produto produto, int quantidade){
        try {
            Venda venda = new Venda();
            venda.setVendedor(vendedor);
@@ -76,7 +72,7 @@ public class LojaController {
            estoque.retirarUnidadeProdutoEstoque(produto.getCodigoProduto(),quantidade);
            venda.setQuantidade(quantidade);
            venda.setTotalCompra(produto.getPreco()*quantidade);
-           venda.adicionarVenda(venda);
+           vendasController.adicionarVenda(venda);
            System.out.println("--------------NOTA FISCAL------------------");
            System.out.println(venda.mostrarVenda());
            System.out.println("--------------------------------------");
@@ -93,28 +89,47 @@ public class LojaController {
     }
 
     public void listarVendas(){
-        for (Venda venda: vendasController.getVendas()) {
-            System.out.println(venda.mostrarVenda());
-            System.out.println();
+        try {
+            System.out.println("------------------LISTA DE VENDAS------------------");
+            for (Venda venda: vendasController.getVendas()) {
+                System.out.println(venda.mostrarVenda());
+                System.out.println();
+            }
+        }catch ( NullPointerException listaVendaVazia){
+            System.out.println(listaVendaVazia.getMessage());
         }
+
     }
     public void listarVendedores(){
-        for (Vendedor vendedor: vendedorController.getVendedores()){
-            System.out.println(vendedor.mostrar());
-            System.out.println();
+        try {
+            System.out.println("------------------LISTA DE VENDEDORES------------------");
+            for (Vendedor vendedor: vendedorController.getVendedores()){
+                System.out.println(vendedor.mostrar());
+                System.out.println();
+            }
+        }catch ( NullPointerException listaVendedoresVazia){
+            System.out.println(listaVendedoresVazia.getMessage());
         }
+
     }
     public void listarClientes(){
-        for (Cliente cliente: clientesController.getClientes()) {
-            System.out.println(cliente.mostrar());
-            System.out.println();
+        try {
+            System.out.println("------------------LISTA DE CLIENTES------------------");
+            for (Cliente cliente: clientesController.getClientes()) {
+                System.out.println(cliente.mostrar());
+                System.out.println();
+            }
+        }catch (NullPointerException listaClientesvazio){
+            System.out.println(listaClientesvazio.getMessage());
         }
+
+
     }
     public void comprasPorCliente(String cpf){
         try {
             for (Venda venda: vendasController.getVendas()) {
                 if (venda.getCliente().getCpf().equals(cpf)){
-                    venda.mostrarVenda();
+                    System.out.println(venda.mostrarVenda());
                 }
             }
         }catch (NullPointerException erro){
@@ -125,7 +140,7 @@ public class LojaController {
         try {
             for (Venda venda: vendasController.getVendas()) {
                 if (venda.getVendedor().getEmail().equals(email)){
-                    venda.mostrarVenda();
+                    System.out.println( venda.mostrarVenda());
                 }
             }
         }catch (NullPointerException erro){
@@ -138,7 +153,7 @@ public class LojaController {
         for (Vendedor vendedor: vendedorController.getVendedores()){
             if (vendedor.getIdVendedor()==idvendedoraleatorio) return vendedor;
         }
-        return null;
+        throw new NullPointerException("Nenhum vendedor cadastrado");
     }
     public void exibirEstoque(){
         for (Produto key:estoque.getProdutosDisponiveis().keySet()) {

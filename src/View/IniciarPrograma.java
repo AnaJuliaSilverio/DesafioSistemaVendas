@@ -1,3 +1,8 @@
+package View;
+
+import Model.Cliente;
+import Model.Vendedor;
+
 public class IniciarPrograma {
     private Cliente cliente = new Cliente();
     private Vendedor vendedor = new Vendedor();

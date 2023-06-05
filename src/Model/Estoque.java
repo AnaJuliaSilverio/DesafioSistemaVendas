@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -15,7 +17,7 @@ public class Estoque {
         }
         for (Produto p:produtosDisponiveis.keySet()) {
             if (p.equals(produto)) {
-                throw new IllegalArgumentException("Produto já existe!");
+                throw new IllegalArgumentException("Model.Produto já existe!");
             }
         }
       produtosDisponiveis.put(produto,quantidade);
@@ -56,7 +58,7 @@ public class Estoque {
                 return true;
             }
         }
-        throw new NullPointerException("Produto não está no estoque");
+        throw new NullPointerException("Model.Produto não está no estoque");
     }
 
 

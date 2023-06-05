@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +13,14 @@ public class Cliente extends Pessoa{
     public Cliente() {
     }
 
-
     public List<Cliente> getClientes() {
+        if (clientes.isEmpty())throw new NullPointerException("Lista de clientes vazia");
         return clientes;
     }
 
     public void adicionarCliente(Cliente cliente){
         for (Cliente c:clientes) {
-            if (c.getCpf().equals(cliente.getCpf())||c.getEmail().equals(cliente.getEmail())) throw new IllegalArgumentException("Cliente já cadastrado");
+            if (c.getCpf().equals(cliente.getCpf())||c.getEmail().equals(cliente.getEmail())) throw new RuntimeException("Cliente já cadastrado");
         }
         clientes.add(cliente);
     }
