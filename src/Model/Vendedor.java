@@ -10,9 +10,7 @@ public class Vendedor extends Pessoa{
     private List<Vendedor> vendedores = new ArrayList<>();
 
     public Vendedor() {
-
     }
-
     public Vendedor(String nome, String cpf, String email, int idade) {
         super(nome, cpf, email, idade);
         Vendedor.contidVendedor++;
@@ -37,11 +35,6 @@ public class Vendedor extends Pessoa{
 
     public int getIdVendedor() {
         return idVendedor;
-    }
-
-    public void setIdVendedor() {
-        Vendedor.contidVendedor++;
-        this.idVendedor = contidVendedor;
     }
 
     @Override

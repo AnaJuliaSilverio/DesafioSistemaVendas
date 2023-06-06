@@ -1,13 +1,15 @@
 package View;
 
-import Controller.FormataValores;
+import Controller.EntradasController;
 import Controller.LojaController;
 import Model.Cliente;
 import Model.Produto;
 import Model.Vendedor;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.exit;
 
@@ -33,19 +35,20 @@ public class Loja {
         opcoesTipoMenu.put("3","Login");
         opcoesTipoMenu.put("4","Sair");
 
-        opcoesTipoMenuVendedor = new HashMap<>();
-        opcoesTipoMenuVendedor.put("1","Cadastrar Model.Produto");
-        opcoesTipoMenuVendedor.put("2","Atualizar Model.Produto");
-        opcoesTipoMenuVendedor.put("3","Listar Vendas");
-        opcoesTipoMenuVendedor.put("4","Listar Vendedores");
-        opcoesTipoMenuVendedor.put("5","Listar Clientes");
-        opcoesTipoMenuVendedor.put("6","Buscar clientes por CPF");
-        opcoesTipoMenuVendedor.put("7","Buscar vendedores por email");
-        opcoesTipoMenuVendedor.put("8","Checar estoque");
-        opcoesTipoMenuVendedor.put("9","Voltar ao menu principal");
-        opcoesTipoMenuVendedor.put("10","Sair");
+        opcoesTipoMenuVendedor = new LinkedHashMap<>();
+        opcoesTipoMenuVendedor.put("1","Cadastrar Produto");
+        opcoesTipoMenuVendedor.put("2","Atualizar Produto");
+        opcoesTipoMenuVendedor.put("3","Adicionar desconto aos Produto");
+        opcoesTipoMenuVendedor.put("4","Listar Vendas");
+        opcoesTipoMenuVendedor.put("5","Listar Vendedores");
+        opcoesTipoMenuVendedor.put("6","Listar Clientes");
+        opcoesTipoMenuVendedor.put("7","Buscar clientes por CPF");
+        opcoesTipoMenuVendedor.put("8","Buscar vendedores por email");
+        opcoesTipoMenuVendedor.put("9","Checar estoque");
+        opcoesTipoMenuVendedor.put("10","Voltar ao menu principal");
+        opcoesTipoMenuVendedor.put("11","Sair");
 
-        opcoesTipoMenuCliente = new HashMap<>();
+        opcoesTipoMenuCliente = new LinkedHashMap<>();
         opcoesTipoMenuCliente.put("1","Listar Produtos");
         opcoesTipoMenuCliente.put("2","Comprar");
         opcoesTipoMenuCliente.put("3","Voltar ao menu principal");
@@ -64,7 +67,6 @@ public class Loja {
                 System.out.println(erro.getMessage());
             }
         }
-
     }
     public void menuPrincipal(){
         System.out.println("Bem vindo(a) a "+nomeLoja);
@@ -83,7 +85,7 @@ public class Loja {
                     case 3 -> {
                         System.out.println("Digite seu email: ");
                         String email = sc.next();
-                       FormataValores.verificaEmail(email);
+                       EntradasController.verificaEmail(email);
                         if (lojaController.verificaCredencial(email) instanceof Cliente){
                             cliente = (Cliente) lojaController.verificaCredencial(email);
                             menuFluxoCliente();
@@ -96,6 +98,9 @@ public class Loja {
                     case 4->exit(0);
                 }
                 break;
+            }catch (NumberFormatException erro){
+                System.out.println(erro.getMessage());
+                sc.nextLine();
             }catch (RuntimeException erro){
                 System.out.println(erro.getMessage());
                 sc.nextLine();
@@ -105,9 +110,9 @@ public class Loja {
     }
 
     public void menuFluxoCliente() {
-        vendedor = lojaController.turnoDaVez();
         sc.nextLine();
-        System.out.println("Ola sou o(a) " + vendedor.getNome() + ",serei responsável pela sua venda!");
+        vendedor = lojaController.turnoDaVez();
+        System.out.println("Olá sou o(a) " + vendedor.getNome() + ",serei responsável pela sua venda!");
         while (true){
             mostrarOpcoes(opcoesTipoMenuCliente);
             try {
@@ -117,9 +122,9 @@ public class Loja {
                         Produto produto;
                         int quantidade;
                         System.out.println("Digite o código do produto: ");
-                        produto = lojaController.consultarProduto(sc.nextInt());
+                        produto = lojaController.consultarProduto(EntradasController.verificaQuantidade(sc.next()));
                         System.out.println("Quantas unidade de " + produto.getNome()+ " deseja comprar?");
-                        quantidade = sc.nextInt();
+                        quantidade = EntradasController.verificaQuantidade(sc.next());
                         sc.nextLine();
                         lojaController.vender(vendedor, cliente, produto, quantidade);
                         lojaController.listarVendas();
@@ -139,48 +144,47 @@ public class Loja {
     }
     public void menuFluxoVendedor(){
         sc.nextLine();
-
+        mostrarOpcoes(opcoesTipoMenuVendedor);
         while (true){
-            mostrarOpcoes(opcoesTipoMenuVendedor);
             try {
                 switch (opcao) {
                     case 1 -> lerInformacoesProduto();
                     case 2 -> {
                         System.out.println("Digite o código do produto: ");
-                        int codigo = sc.nextInt();
+                        int codigo = EntradasController.verificaQuantidade(sc.next());
                         System.out.println("Digite a quantidade a ser adicionada ao estoque: ");
-                        int quantidade = sc.nextInt();
+                        int quantidade = EntradasController.verificaQuantidade(sc.next());
                         lojaController.atualizaQtdProduto(quantidade, codigo);
                     }
-                    case 3 -> {
+                    case 3-> {
+                        System.out.println("Digite a porcentagem do desconto: ");
+                        double desconto = EntradasController.verificaPreco(sc.next());
+                        System.out.println("Digite até que dia esse desconto será valido: (Formato esperado: dd/mm/yyyy)");
+                        String data =EntradasController.verificaData(sc.next());
+                        lojaController.adicionarDesconto(desconto,data);
+                    }
+                    case 4 -> lojaController.listarVendas();
 
-                        lojaController.listarVendas();
-                    }
-                    case 4 -> {
-
-                        lojaController.listarVendedores();
-                    }
-                    case 5 -> {
-                        lojaController.listarClientes();
-                    }
-                    case 6 -> {
+                    case 5 -> lojaController.listarVendedores();
+                    case 6 -> lojaController.listarClientes();
+                    case 7-> {
                         System.out.println("Digite o cpf do cliente desejado");
                         String cpf = sc.next();
-                        FormataValores.validaCPF(cpf);
+                        EntradasController.validaCPF(cpf);
                         lojaController.comprasPorCliente(cpf);
                     }
-                    case 7 -> {
+                    case 8 -> {
                         System.out.println("Digite o email do vendedor desejado");
                         String email = sc.next();
-                        FormataValores.verificaEmail(email);
+                        EntradasController.verificaEmail(email);
                         lojaController.comprasPorVendedor(email);
                     }
-                    case 8 -> {
-                        System.out.println("------------------Listar Model.Estoque------------------");
+                    case 9-> {
+                        System.out.println("------------------Listar Estoque------------------");
                         lojaController.exibirEstoque();
                     }
-                    case 9-> menuPrincipal();
-                    case 10-> exit(0);
+                    case 10-> menuPrincipal();
+                    case 11-> exit(0);
                 }
                 if (continuar()) menuFluxoVendedor();
                 else exit(0);
@@ -192,18 +196,16 @@ public class Loja {
     }
 
     public Cliente lerInformacoesCliente(){
-
             cliente = new Cliente();
             System.out.println("------------CADASTRAR CLIENTE------------------");
             System.out.println("Digite seu nome: ");
-            cliente.setNome(FormataValores.formataNome(sc.nextLine()));
+            cliente.setNome(EntradasController.formataNome(sc.nextLine()));
             System.out.println("Digite seu CPF: ");
             cliente.setCpf(sc.next());
             System.out.println("Digite seu email: ");
             cliente.setEmail( sc.next());
             System.out.println("Digite sua idade: ");
-            cliente.setIdade( sc.nextInt());
-
+            cliente.setIdade(EntradasController.verificaQuantidade(sc.next()));
         return cliente;
     }
 
@@ -211,30 +213,29 @@ public class Loja {
         vendedor = new Vendedor();
         System.out.println("------------CADASTRAR VENDEDOR------------------");
         System.out.println("Digite seu nome: ");
-        vendedor.setNome(FormataValores.formataNome(sc.nextLine()));
+        vendedor.setNome(EntradasController.formataNome(sc.nextLine()));
         System.out.println("Digite seu CPF: ");
-        vendedor.setCpf(FormataValores.formataCPF(sc.next()));
+        vendedor.setCpf(EntradasController.formataCPF(sc.next()));
         System.out.println("Digite seu email: ");
         vendedor.setEmail( sc.next());
         System.out.println("Digite sua idade: ");
-        vendedor.setIdade( sc.nextInt());
+        vendedor.setIdade( EntradasController.verificaQuantidade(sc.next()));
         sc.nextLine();
         return vendedor;
-
     }
     public void lerInformacoesProduto(){
         System.out.println("------------CADASTRAR PRODUTO------------------");
         System.out.println("Digite o nome do produto: ");
-        String nome = sc.nextLine();
+        String nome = EntradasController.formataNome(sc.nextLine());
         System.out.println("Digite a descricao: ");
         String descricao = sc.nextLine();
         System.out.println("Digite a categoria: ");
         String categoria = sc.nextLine();
         System.out.println("Digite a quantidade: ");
-        int quantidade = sc.nextInt();
+        int quantidade = EntradasController.verificaQuantidade(sc.next());
         System.out.println("Digite o preço: ");
-        double preco = sc.nextDouble();
-        lojaController.cadastrarNovoProduto(FormataValores.formataNome(nome),preco,descricao,categoria,quantidade);
+        double preco = EntradasController.verificaPreco(sc.next());
+        lojaController.cadastrarNovoProduto(nome,preco,descricao,categoria,quantidade);
     }
 
     public boolean continuar(){

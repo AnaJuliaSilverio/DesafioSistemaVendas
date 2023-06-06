@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.EntradasController;
+
 import java.util.Objects;
 
 public class Produto {
@@ -42,27 +44,8 @@ public class Produto {
         return codigoProduto;
     }
 
-    public void setCodigoProduto(int codigoProduto) {
-        this.codigoProduto = codigoProduto;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
     public String mostrarProduto(){
-        return "Código: "+codigoProduto+"\nNome: "+nome+"\nPreço: R$"+preco+"\nCategoria: "+categoria;
+        return "Código: "+codigoProduto+"\nNome: "+nome+"\nPreço: "+ EntradasController.formataPreco(preco) +"\nCategoria: "+categoria;
     }
 
     @Override

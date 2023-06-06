@@ -2,9 +2,10 @@ package Controller;
 
 import Model.*;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 import View.*;
 public class LojaController {
     private Cliente clientesController=new Cliente();
@@ -13,6 +14,8 @@ public class LojaController {
     private Produto produto;
     private Estoque estoque = new Estoque();
     private Venda vendasController = new Venda();
+    private boolean existeDesconto;
+    private String dataAlteracao;
 
     public LojaController() {
         IniciarPrograma iniciarPrograma= new IniciarPrograma(vendedorController,clientesController);
@@ -82,10 +85,18 @@ public class LojaController {
     }
 
     public void listarProdutos(){
-        for (Produto produto:estoque.getProdutosDisponiveis().keySet()) {
-            System.out.println(produto.mostrarProduto());
-            System.out.println();
+        if (verificaDia()){
+            for (Produto produto:estoque.getProdutosComDesconto().keySet()) {
+                System.out.println(produto.mostrarProduto());
+                System.out.println();
+            }
+        }else {
+            for (Produto produto:estoque.getProdutosDisponiveis().keySet()) {
+                System.out.println(produto.mostrarProduto());
+                System.out.println();
+            }
         }
+
     }
 
     public void listarVendas(){
@@ -156,10 +167,37 @@ public class LojaController {
         throw new NullPointerException("Nenhum vendedor cadastrado");
     }
     public void exibirEstoque(){
-        for (Produto key:estoque.getProdutosDisponiveis().keySet()) {
-            System.out.println(key.mostrarProduto() +"\nQuantidade Disponível: "+estoque.getProdutosDisponiveis().get(key));
-            System.out.println();
+        if (verificaDia()){
+            for (Produto key:estoque.getProdutosComDesconto().keySet()) {
+                System.out.println(key.mostrarProduto() +"\nQuantidade Disponível: "+estoque.getProdutosComDesconto().get(key));
+                System.out.println();
+            }
+        }else {
+            for (Produto key:estoque.getProdutosDisponiveis().keySet()) {
+                System.out.println(key.mostrarProduto() +"\nQuantidade Disponível: "+estoque.getProdutosDisponiveis().get(key));
+                System.out.println();
+            }
         }
+
+    }
+    public void adicionarDesconto(double desconto,String data){
+        if (desconto<=0 || desconto>=100) throw new IllegalArgumentException("A porcentagem deve estar entre 1 e 100");
+        this.existeDesconto = true;
+        desconto = 1-(desconto/100);
+        dataAlteracao = data;
+        for (Produto produto:estoque.getProdutosComDesconto().keySet()) {
+            produto.setPreco(produto.getPreco()*desconto);
+        }
+    }
+    public boolean verificaDia(){
+        DateTimeFormatter formatarData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataFomatada = LocalDate.parse(dataAlteracao,formatarData);
+        if (this.existeDesconto && dataFomatada.isAfter(LocalDate.now())) return true;
+        else {
+            this.existeDesconto = false;
+            return false;
+        }
+
     }
 
 }

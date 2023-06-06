@@ -32,8 +32,8 @@ public abstract class Pessoa {
     }
 
     public void setCpf(String cpf)  {
-            FormataValores.validaCPF(cpf);
-            FormataValores.formataCPF(cpf);
+            EntradasController.validaCPF(cpf);
+            EntradasController.formataCPF(cpf);
             this.cpf = cpf;
 
     }
@@ -43,9 +43,8 @@ public abstract class Pessoa {
     }
 
     public void setEmail(String email){
-            FormataValores.verificaEmail(email);
+            EntradasController.verificaEmail(email);
             this.email = email;
-
     }
 
     public int getIdade() {

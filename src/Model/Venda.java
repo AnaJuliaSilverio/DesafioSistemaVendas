@@ -103,8 +103,8 @@ public class Venda {
     }
     public String mostrarVenda(){
         return "Model.Vendedor: "+vendedor.getNome()+"\nModel.Cliente: "+cliente.getNome()+"\nData da compra: "+dataCompra
-                +"\nCódigo produto: "+produto.getCodigoProduto()+"\nNome do Model.Produto: "+produto.getNome()+"\nPreço unitário: "+ FormataValores.formataPreco(produto.getPreco())+
-                "\nQuantidade: "+quantidade+"\nValor total da compra: "+ FormataValores.formataPreco(totalCompra);
+                +"\nCódigo produto: "+produto.getCodigoProduto()+"\nNome do Model.Produto: "+produto.getNome()+"\nPreço unitário: "+ EntradasController.formataPreco(produto.getPreco())+
+                "\nQuantidade: "+quantidade+"\nValor total da compra: "+ EntradasController.formataPreco(totalCompra);
 
     }
 }

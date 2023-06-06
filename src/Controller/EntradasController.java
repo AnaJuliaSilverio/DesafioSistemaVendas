@@ -1,8 +1,11 @@
 package Controller;
 
-public class FormataValores {
+import java.util.InputMismatchException;
+
+public class EntradasController {
 
     public static String formataNome(String nome){
+        if (!nome.matches("^[a-zA-Z\\s]+$")) throw new InputMismatchException("O nome não pode conter números e nem caracteres especiais");
         nome = nome.trim();
         nome = nome.substring(0,1).toUpperCase().concat(nome.substring(1));
         for (int i = 0; i < nome.length(); i++) {
@@ -28,11 +31,10 @@ public class FormataValores {
 
     }
     public static void validaCPF(String CPF) {
-        if (!(CPF.matches("[1-9.-]+"))){throw new IllegalArgumentException("FORMATO DO CPF INVALIDO");}
+        if (!(CPF.matches("[0-9.-]+"))){throw new IllegalArgumentException("FORMATO DO CPF INVALIDO");}
         //tirar caractere especial
         CPF = CPF.replace("-","");
         CPF = CPF.replace(".","");
-        System.out.println(CPF);
         if (CPF.equals("00000000000") || CPF.equals("11111111111") || CPF.equals("22222222222") || CPF.equals("33333333333") || CPF.equals("44444444444") || CPF.equals("55555555555") || CPF.equals("66666666666") || CPF.equals("77777777777") || CPF.equals("88888888888") || CPF.equals("99999999999") || (CPF.length() != 11))
             throw new IllegalArgumentException("CPF INVALIDO");
 
@@ -64,5 +66,20 @@ public class FormataValores {
     }
     public static void verificaEmail(String email){
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) throw new IllegalArgumentException("EMAIL INVALIDO");
+    }
+    public static int verificaQuantidade(String quantidade){
+        if ((!quantidade.matches("^[0-9]+$"))) throw new NumberFormatException("O valor deve ser um inteiro");
+        if (Integer.parseInt(quantidade)<=0)  throw new NumberFormatException("O valor deve ser maior que 0");
+        return Integer.parseInt(quantidade);
+    }
+    public static double verificaPreco(String preco){
+        if (!preco.matches("[0-9.]+")) throw new NumberFormatException("O valor deve ser um decimal");
+        if (Double.parseDouble(preco)<=0) throw new NumberFormatException("O valor deve ser maior que 0");
+        return Double.parseDouble(preco);
+    }
+    public static String verificaData(String data){
+        if (!data.matches("[0-9-/]+")) throw new IllegalArgumentException("Insera a data no formato esperado! dd/mm/aaaa");
+        if (Integer.parseInt(data.substring(0,2))<0 ||Integer.parseInt(data.substring(0,2))>31 ) throw new IllegalArgumentException("Verifique se a data está correto");
+        return data;
     }
 }

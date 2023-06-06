@@ -1,12 +1,19 @@
 package Model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Estoque {
-    private HashMap<Produto,Integer> produtosDisponiveis = new LinkedHashMap<>();
+    private Map<Produto,Integer> produtosDisponiveis = new LinkedHashMap<>();
+    private Map<Produto,Integer> produtosComDesconto = new LinkedHashMap<>();
+
+    public Map<Produto, Integer> getProdutosComDesconto() {
+        produtosComDesconto.putAll(produtosDisponiveis);
+        return produtosComDesconto;
+    }
 
     public Estoque() {
+
         iniciarEstoque();
     }
 
@@ -62,7 +69,7 @@ public class Estoque {
     }
 
 
-    public HashMap<Produto, Integer> getProdutosDisponiveis() {
+    public Map<Produto,Integer> getProdutosDisponiveis() {
         return produtosDisponiveis;
     }
     private void iniciarEstoque(){
