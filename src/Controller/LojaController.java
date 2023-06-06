@@ -15,7 +15,7 @@ public class LojaController {
     private Estoque estoque = new Estoque();
     private Venda vendasController = new Venda();
     private boolean existeDesconto;
-    private String dataAlteracao;
+    private LocalDate dataAlteracao;
 
     public LojaController() {
         IniciarPrograma iniciarPrograma= new IniciarPrograma(vendedorController,clientesController);
@@ -181,18 +181,18 @@ public class LojaController {
 
     }
     public void adicionarDesconto(double desconto,String data){
-        if (desconto<=0 || desconto>=100) throw new IllegalArgumentException("A porcentagem deve estar entre 1 e 100");
+        DateTimeFormatter formatarData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.dataAlteracao = LocalDate.parse(data,formatarData);
+        if (desconto>=100) throw new IllegalArgumentException("A porcentagem deve estar entre 1 e 100");
         this.existeDesconto = true;
         desconto = 1-(desconto/100);
-        dataAlteracao = data;
         for (Produto produto:estoque.getProdutosComDesconto().keySet()) {
             produto.setPreco(produto.getPreco()*desconto);
         }
     }
     public boolean verificaDia(){
-        DateTimeFormatter formatarData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate dataFomatada = LocalDate.parse(dataAlteracao,formatarData);
-        if (this.existeDesconto && dataFomatada.isAfter(LocalDate.now())) return true;
+
+        if (this.existeDesconto && dataAlteracao.isAfter(LocalDate.now())) return true;
         else {
             this.existeDesconto = false;
             return false;

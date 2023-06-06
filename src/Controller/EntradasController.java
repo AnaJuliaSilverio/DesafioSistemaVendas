@@ -77,9 +77,5 @@ public class EntradasController {
         if (Double.parseDouble(preco)<=0) throw new NumberFormatException("O valor deve ser maior que 0");
         return Double.parseDouble(preco);
     }
-    public static String verificaData(String data){
-        if (!data.matches("[0-9-/]+")) throw new IllegalArgumentException("Insera a data no formato esperado! dd/mm/aaaa");
-        if (Integer.parseInt(data.substring(0,2))<0 ||Integer.parseInt(data.substring(0,2))>31 ) throw new IllegalArgumentException("Verifique se a data está correto");
-        return data;
-    }
+
 }

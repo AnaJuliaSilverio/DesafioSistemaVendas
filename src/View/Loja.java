@@ -6,11 +6,13 @@ import Model.Cliente;
 import Model.Produto;
 import Model.Vendedor;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.System.err;
 import static java.lang.System.exit;
 
 public class Loja {
@@ -160,7 +162,7 @@ public class Loja {
                         System.out.println("Digite a porcentagem do desconto: ");
                         double desconto = EntradasController.verificaPreco(sc.next());
                         System.out.println("Digite até que dia esse desconto será valido: (Formato esperado: dd/mm/yyyy)");
-                        String data =EntradasController.verificaData(sc.next());
+                        String data =sc.next();
                         lojaController.adicionarDesconto(desconto,data);
                     }
                     case 4 -> lojaController.listarVendas();
@@ -188,6 +190,8 @@ public class Loja {
                 }
                 if (continuar()) menuFluxoVendedor();
                 else exit(0);
+            }catch (DateTimeParseException error){
+                System.out.println("Data inválida.Digite no formato pedido!");
             }catch (IllegalArgumentException error){
                 sc.nextLine();
                 System.out.println(error.getMessage());
