@@ -7,13 +7,7 @@ public class Estoque {
     private Map<Produto,Integer> produtosDisponiveis = new LinkedHashMap<>();
     private Map<Produto,Integer> produtosComDesconto = new LinkedHashMap<>();
 
-    public Map<Produto, Integer> getProdutosComDesconto() {
-        produtosComDesconto.putAll(produtosDisponiveis);
-        return produtosComDesconto;
-    }
-
     public Estoque() {
-
         iniciarEstoque();
     }
 
@@ -72,6 +66,11 @@ public class Estoque {
     public Map<Produto,Integer> getProdutosDisponiveis() {
         return produtosDisponiveis;
     }
+    public Map<Produto, Integer> getProdutosComDesconto() {
+        produtosComDesconto.putAll(produtosDisponiveis);
+        return produtosComDesconto;
+    }
+
     private void iniciarEstoque(){
         produtosDisponiveis.put(new Produto("iPhone 12", 4999.0, "Smartphone top de linha", "Eletrônicos"),10);
         produtosDisponiveis.put(new Produto("Nike Air Zoom Pegasus 37", 499.9, "Tênis esportivo", "Calçados"),5);

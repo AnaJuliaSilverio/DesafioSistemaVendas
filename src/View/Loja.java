@@ -31,7 +31,7 @@ public class Loja {
     }
 
     private void inicializarMenu(){
-        opcoesTipoMenu = new HashMap<>();
+        opcoesTipoMenu = new LinkedHashMap<>();
         opcoesTipoMenu.put("1","Cadastrar Cliente");
         opcoesTipoMenu.put("2","Cadastrar Vendedor");
         opcoesTipoMenu.put("3","Login");
@@ -100,12 +100,11 @@ public class Loja {
                     case 4->exit(0);
                 }
                 break;
-            }catch (NumberFormatException erro){
+            }catch (IllegalArgumentException erro){
                 System.out.println(erro.getMessage());
                 sc.nextLine();
-            }catch (RuntimeException erro){
+            }catch (NullPointerException erro){
                 System.out.println(erro.getMessage());
-                sc.nextLine();
                 menuPrincipal();
             }
         }
@@ -147,6 +146,7 @@ public class Loja {
     public void menuFluxoVendedor(){
         sc.nextLine();
         mostrarOpcoes(opcoesTipoMenuVendedor);
+        System.out.println("Bem vindo(a) "+vendedor.getNome());
         while (true){
             try {
                 switch (opcao) {
@@ -213,7 +213,7 @@ public class Loja {
         return cliente;
     }
 
-    public Vendedor lerInformacoesVendedor() throws IllegalArgumentException{
+    public Vendedor lerInformacoesVendedor(){
         vendedor = new Vendedor();
         System.out.println("------------CADASTRAR VENDEDOR------------------");
         System.out.println("Digite seu nome: ");

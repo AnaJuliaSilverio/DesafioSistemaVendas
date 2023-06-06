@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 public class EntradasController {
 
     public static String formataNome(String nome){
-        if (!nome.matches("^[a-zA-Z\\s]+$")) throw new InputMismatchException("O nome não pode conter números e nem caracteres especiais");
+        if (!nome.matches("^[a-zA-Z\\s]+$")) throw new IllegalArgumentException("O nome não pode conter números e nem caracteres especiais");
         nome = nome.trim();
         nome = nome.substring(0,1).toUpperCase().concat(nome.substring(1));
         for (int i = 0; i < nome.length(); i++) {

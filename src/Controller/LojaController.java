@@ -191,13 +191,11 @@ public class LojaController {
         }
     }
     public boolean verificaDia(){
-
         if (this.existeDesconto && dataAlteracao.isAfter(LocalDate.now())) return true;
         else {
             this.existeDesconto = false;
             return false;
         }
-
     }
 
 }

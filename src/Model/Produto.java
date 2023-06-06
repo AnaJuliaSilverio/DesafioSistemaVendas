@@ -21,15 +21,8 @@ public class Produto {
         this.codigoProduto = contCodigoProduto;
     }
 
-    public Produto() {
-    }
-
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public double getPreco() {

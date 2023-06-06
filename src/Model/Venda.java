@@ -9,13 +9,10 @@ import Controller.*;
 public class Venda {
     private Vendedor vendedor;
     private Cliente cliente;
-    private String codigo;
     private Produto produto;
-    private String nomeProduto;
-    private double preco;
     private int quantidade;
     private double totalCompra;
-    private String  dataCompra;
+    private String dataCompra;
 
     private List<Venda> vendas = new ArrayList<>();
 
@@ -23,12 +20,6 @@ public class Venda {
         LocalDate data = LocalDate.now();
         DateTimeFormatter formatarData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         dataCompra = data.format(formatarData);
-
-    }
-
-
-    public Produto getProduto() {
-        return produto;
     }
 
     public void setProduto(Produto produto) {
@@ -50,43 +41,8 @@ public class Venda {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getNomeProduto() {
-        return nomeProduto;
-    }
-
-    public void setNomeProduto(String nomeProduto) {
-        this.nomeProduto = nomeProduto;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-
-        this.preco = preco;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
     public void setQuantidade(int quantidade) {
-
         this.quantidade = quantidade;
-    }
-
-    public double getTotalCompra() {
-        return totalCompra;
     }
 
     public void setTotalCompra(double totalCompra) {
@@ -105,6 +61,5 @@ public class Venda {
         return "Model.Vendedor: "+vendedor.getNome()+"\nModel.Cliente: "+cliente.getNome()+"\nData da compra: "+dataCompra
                 +"\nCódigo produto: "+produto.getCodigoProduto()+"\nNome do Model.Produto: "+produto.getNome()+"\nPreço unitário: "+ EntradasController.formataPreco(produto.getPreco())+
                 "\nQuantidade: "+quantidade+"\nValor total da compra: "+ EntradasController.formataPreco(totalCompra);
-
     }
 }
