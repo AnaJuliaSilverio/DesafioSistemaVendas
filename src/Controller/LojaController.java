@@ -21,9 +21,9 @@ public class LojaController {
         IniciarPrograma iniciarPrograma= new IniciarPrograma(vendedorController,clientesController);
     }
 
-    public int verificaOpcaoMenu(String opcao, HashMap<String,String> menu) throws IllegalArgumentException{
+    public int verificaOpcaoMenu(String opcao, HashMap<String,String> menu){
         for (String op:menu.keySet()) {
-            if (op.equals(opcao)||menu.get(op).equals(opcao)) return Integer.parseInt(op);
+            if (op.equals(opcao)||menu.get(op).equalsIgnoreCase(opcao)) return Integer.parseInt(op);
         }
         throw new IllegalArgumentException("Por favor digite uma opção válida");
     }
@@ -35,9 +35,9 @@ public class LojaController {
         vendedorController.adicionarVendedor(vendedor);
     }
 
-    public Pessoa verificaCredencial(String email) throws NullPointerException{
-        if (clientesController.procuraClienteEmail(email)!=null) return clientesController.procuraClienteEmail(email);
-        else if (vendedorController.procuraVendedorEmail(email)!=null) return vendedorController.procuraVendedorEmail(email);
+    public Pessoa verificaCredencial(String email,String senha){
+        if (clientesController.procuraClienteEmail(email,senha)!=null) return clientesController.procuraClienteEmail(email,senha);
+        else if (vendedorController.procuraVendedorEmail(email,senha)!=null) return vendedorController.procuraVendedorEmail(email,senha);
         else throw new NullPointerException("Pessoa não cadastrada!");
     }
 
@@ -96,7 +96,6 @@ public class LojaController {
                 System.out.println();
             }
         }
-
     }
 
     public void listarVendas(){

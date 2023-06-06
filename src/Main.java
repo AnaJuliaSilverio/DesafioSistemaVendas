@@ -1,3 +1,4 @@
+import Controller.EntradasController;
 import View.Loja;
 
 public class Main {

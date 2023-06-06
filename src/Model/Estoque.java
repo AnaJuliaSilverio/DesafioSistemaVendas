@@ -52,7 +52,7 @@ public class Estoque {
         }
         throw new NullPointerException("Esse código não está relacionado com nenhum produto");
     }
-    public boolean removerProdutoEstoque(int codigo){
+    private boolean removerProdutoEstoque(int codigo){
         for (Produto produto:produtosDisponiveis.keySet()) {
             if (produto.getCodigoProduto()==codigo){
                 produtosDisponiveis.remove(produto);

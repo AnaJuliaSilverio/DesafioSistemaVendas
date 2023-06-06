@@ -2,22 +2,18 @@ package View;
 
 import Controller.EntradasController;
 import Controller.LojaController;
-import Model.Cliente;
-import Model.Produto;
-import Model.Vendedor;
+import Model.*;
 
+import java.time.Period;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.System.err;
 import static java.lang.System.exit;
 
 public class Loja {
-    private Scanner sc = new Scanner(System.in);
     private static final String nomeLoja = "Master Lojas";
+    private Scanner sc = new Scanner(System.in);
     private HashMap<String,String> opcoesTipoMenu;
     private HashMap<String,String> opcoesTipoMenuVendedor;
     private HashMap<String,String> opcoesTipoMenuCliente;
@@ -87,24 +83,29 @@ public class Loja {
                     case 3 -> {
                         System.out.println("Digite seu email: ");
                         String email = sc.next();
-                       EntradasController.verificaEmail(email);
-                        if (lojaController.verificaCredencial(email) instanceof Cliente){
-                            cliente = (Cliente) lojaController.verificaCredencial(email);
+                        EntradasController.verificaEmail(email);
+                        System.out.println("Digite sua senha: ");
+                        String senha = sc.next();
+                        Pessoa pessoa = lojaController.verificaCredencial(email,senha);
+                        if (pessoa instanceof Cliente){
+                            cliente = (Cliente) pessoa;
                             menuFluxoCliente();
                         }
-                        else if (lojaController.verificaCredencial(email) instanceof Vendedor){
-                            vendedor = (Vendedor)  lojaController.verificaCredencial(email);
+                        else if (pessoa instanceof Vendedor){
+                            vendedor = (Vendedor) pessoa;
                             menuFluxoVendedor();
                         }
                     }
                     case 4->exit(0);
                 }
                 break;
-            }catch (IllegalArgumentException erro){
+            }
+            catch (IllegalArgumentException erro){
                 System.out.println(erro.getMessage());
                 sc.nextLine();
-            }catch (NullPointerException erro){
+            }catch (NullPointerException | PessoaCadastrada erro){
                 System.out.println(erro.getMessage());
+                sc.nextLine();
                 menuPrincipal();
             }
         }
@@ -145,8 +146,9 @@ public class Loja {
     }
     public void menuFluxoVendedor(){
         sc.nextLine();
-        mostrarOpcoes(opcoesTipoMenuVendedor);
         System.out.println("Bem vindo(a) "+vendedor.getNome());
+        mostrarOpcoes(opcoesTipoMenuVendedor);
+
         while (true){
             try {
                 switch (opcao) {
@@ -210,6 +212,8 @@ public class Loja {
             cliente.setEmail( sc.next());
             System.out.println("Digite sua idade: ");
             cliente.setIdade(EntradasController.verificaQuantidade(sc.next()));
+        System.out.println("Digite sua senha: -a senha deve no minimo ter 5 caracteres,sendo uma letra maiúscula e um caracter especial");
+        cliente.setSenha(EntradasController.verificaSenha(sc.next()));
         return cliente;
     }
 

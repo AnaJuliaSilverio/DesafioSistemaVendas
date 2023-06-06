@@ -11,8 +11,8 @@ public class Vendedor extends Pessoa{
 
     public Vendedor() {
     }
-    public Vendedor(String nome, String cpf, String email, int idade) {
-        super(nome, cpf, email, idade);
+    public Vendedor(String nome, String cpf, String email, int idade,String senha) {
+        super(nome, cpf, email, idade,senha);
         Vendedor.contidVendedor++;
         this.idVendedor = contidVendedor;
     }
@@ -24,7 +24,7 @@ public class Vendedor extends Pessoa{
 
     public void adicionarVendedor(Vendedor vendedor){
         for (Vendedor v:vendedores) {
-            if (v.getCpf().equals(vendedor.getCpf())||v.getEmail().equals(vendedor.getEmail())) throw new RuntimeException("Vendedor já cadastrado");
+            if (v.getCpf().equals(vendedor.getCpf())||v.getEmail().equals(vendedor.getEmail())) throw new PessoaCadastrada("Vendedor já cadastrado");
         }
         vendedores.add(vendedor);
     }
@@ -41,9 +41,9 @@ public class Vendedor extends Pessoa{
     public String mostrar() {
         return "Código de identificação: "+idVendedor+"\n"+super.mostrar();
     }
-    public Vendedor procuraVendedorEmail(String email) {
+    public Vendedor procuraVendedorEmail(String email,String senha) {
         for (Vendedor v:vendedores) {
-            if (v.getEmail().equals(email))return v;
+            if (v.getEmail().equals(email)&& v.getSenha().equals(senha))return v;
         }
         return null;
     }

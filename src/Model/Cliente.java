@@ -6,8 +6,8 @@ import java.util.List;
 public class Cliente extends Pessoa{
     private List<Cliente> clientes =new ArrayList<>();
 
-    public Cliente(String nome, String cpf, String email, int idade) {
-        super(nome, cpf, email, idade);
+    public Cliente(String nome, String cpf, String email, int idade, String senha) {
+        super(nome, cpf, email, idade, senha);
     }
 
     public Cliente() {
@@ -20,13 +20,13 @@ public class Cliente extends Pessoa{
 
     public void adicionarCliente(Cliente cliente){
         for (Cliente c:clientes) {
-            if (c.getCpf().equals(cliente.getCpf())||c.getEmail().equals(cliente.getEmail())) throw new RuntimeException("Cliente já cadastrado");
+            if (c.getCpf().equals(cliente.getCpf())||c.getEmail().equals(cliente.getEmail())) throw new PessoaCadastrada("Cliente já cadastrado");
         }
         clientes.add(cliente);
     }
-    public Cliente procuraClienteEmail(String email) {
+    public Cliente procuraClienteEmail(String email,String senha) {
         for (Cliente c:clientes) {
-            if (c.getEmail().equals(email))return c;
+            if (c.getEmail().equals(email)&& c.getSenha().equals(senha))return c;
         }
         return null;
     }

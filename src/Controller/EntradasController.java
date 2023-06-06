@@ -1,7 +1,5 @@
 package Controller;
 
-import java.util.InputMismatchException;
-
 public class EntradasController {
 
     public static String formataNome(String nome){
@@ -76,6 +74,18 @@ public class EntradasController {
         if (!preco.matches("[0-9.]+")) throw new NumberFormatException("O valor deve ser um decimal");
         if (Double.parseDouble(preco)<=0) throw new NumberFormatException("O valor deve ser maior que 0");
         return Double.parseDouble(preco);
+    }
+    public static String verificaSenha(String senha) {
+        if (senha.length() < 5) {
+            throw new IllegalArgumentException("A senha deve conter no mínimo 6 caracteres");
+        }
+        if (!senha.matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("A senha deve conter uma letra maiúscula");
+        }
+        if (!senha.matches(".*[!@#$%^&()].*")) {
+            throw new IllegalArgumentException("A senha deve conter um caracter especial");
+        }
+        return senha;
     }
 
 }

@@ -8,15 +8,25 @@ public abstract class Pessoa {
     protected String cpf;
     protected String email;
     protected int idade;
+    protected String senha;
 
     public Pessoa() {
     }
 
-    public Pessoa(String nome, String cpf, String email, int idade) {
+    public Pessoa(String nome, String cpf, String email, int idade,String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.idade = idade;
+        this.senha = senha;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getNome() {
@@ -52,6 +62,7 @@ public abstract class Pessoa {
     }
 
     public void setIdade(int idade) {
+        if (idade<18) throw new NumberFormatException("Para se cadastar deve ter mais de 16 anos");
         this.idade = idade;
     }
 
