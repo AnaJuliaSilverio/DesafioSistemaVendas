@@ -63,6 +63,9 @@ O sistema de vendas possui as seguintes funções e regras de negócios:
 7. *Verificação do scanner nextLine()*
     - O nextLine() quando lido antes do nextInt,por exemplo,lê a tecla enter ao ínves do valor a ser digitado.Por isso,para todo uso do sc.nextLine()
 antes é verificado ele leu um espaço ou um valor.Se ele leu um espaço é feito outra chamada do nextLine().
+8. *Classe IniciarPrograma*
+   - A classe IniciarPrograma inicia as listas de Clientes e Vendedores, para que seja possível fazer consultas e realizar compras sem a necessidade de cadastrar
+manualmente.
 
     
 

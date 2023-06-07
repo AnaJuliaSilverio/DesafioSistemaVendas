@@ -34,8 +34,20 @@ public class LojaView {
                     }
                     case 3 ->{
                         String retorno = pessoaView.login();
-                        if (retorno.equals("cliente")) menuFluxoCliente();
-                        else if (retorno.equals("vendedor")) menuFluxoVendedor();
+                        switch (retorno) {
+                            case "duplo" -> {
+                                System.out.println("Deseja entrar como cliente ou vendedor?");
+                                String resposta = sc.next();
+                                if (resposta.equalsIgnoreCase("cliente")) menuFluxoCliente();
+                                else if (resposta.equalsIgnoreCase("vendedor")) menuFluxoVendedor();
+                                else {
+                                    System.out.println("Resposta inválida");
+                                    menuPrincipal();
+                                }
+                            }
+                            case "cliente" -> menuFluxoCliente();
+                            case "vendedor" -> menuFluxoVendedor();
+                        }
                     }
                     case 4->exit(0);
                 }
@@ -43,10 +55,8 @@ public class LojaView {
             }
             catch (IllegalArgumentException erro){
                 System.out.println(erro.getMessage());
-                sc.nextLine();
             }catch (NullPointerException | PessoaCadastrada erro){
                 System.out.println(erro.getMessage());
-                sc.nextLine();
                 menuPrincipal();
             }
         }
@@ -98,5 +108,4 @@ public class LojaView {
             }
         }
     }
-
 }

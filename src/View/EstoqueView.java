@@ -1,8 +1,6 @@
 package View;
-
 import Controller.*;
 import Model.*;
-
 import java.util.Scanner;
 
 public class EstoqueView {

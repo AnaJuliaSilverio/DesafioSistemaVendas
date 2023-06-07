@@ -56,6 +56,8 @@ public class VendedorView {
         vendedor.setEmail( sc.next());
         System.out.println("Digite sua idade: ");
         vendedor.setIdade( EntradasController.verificaQuantidade(sc.next()));
+        System.out.println("Digite sua senha: -a senha deve no minimo ter 5 caracteres,sendo uma letra maiúscula e um caracter especial");
+        vendedor.setSenha(EntradasController.verificaSenha(sc.next()));
         return vendedor;
     }
 

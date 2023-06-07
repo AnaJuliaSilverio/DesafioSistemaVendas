@@ -32,10 +32,7 @@ public class Estoque {
             }
             }
         throw new NullPointerException("Esse código não está relacionado com nenhum produto");
-        }
-
-
-
+    }
 
     public Map<Produto,Integer> getProdutosDisponiveis() {
         return produtosDisponiveis;

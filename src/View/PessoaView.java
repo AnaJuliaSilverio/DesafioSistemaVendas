@@ -28,7 +28,10 @@ public class PessoaView {
         EntradasController.verificaEmail(email);
         System.out.println("Digite sua senha: ");
         String senha = sc.next();
-        if (clienteController.verificaCredenciais(email,senha)!= null) {
+        if (clienteController.verificaCredenciais(email,senha)!= null && vendedorController.verificaCredenciais(email,senha)!=null){
+            return "duplo";
+        }
+        else if (clienteController.verificaCredenciais(email,senha)!= null) {
             clienteView.setCliente(clienteController.verificaCredenciais(email, senha));
             return "cliente";
         }
