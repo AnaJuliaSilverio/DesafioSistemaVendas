@@ -1,9 +1,8 @@
-import Controller.EntradasController;
-import View.Loja;
+import View.LojaView;
 
 public class Main {
     public static void main(String[] args) {
-    Loja loja = new Loja();
+    LojaView loja = new LojaView();
     loja.menuPrincipal();
 
     }

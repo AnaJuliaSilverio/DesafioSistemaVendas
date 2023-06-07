@@ -1,6 +1,23 @@
 package Controller;
 
+import java.util.HashMap;
+import java.util.Scanner;
+
 public class EntradasController {
+    public static int verificaOpcaoMenu(String opcao, HashMap<String,String> menu){
+        for (String op:menu.keySet()) {
+            if (op.equals(opcao)||menu.get(op).equalsIgnoreCase(opcao)) return Integer.parseInt(op);
+        }
+        throw new IllegalArgumentException("Por favor digite uma opção válida");
+    }
+    public static String verificaBufferScaner(String entrada){
+        if (entrada.isEmpty()){
+            Scanner sc = new Scanner(System.in);
+            entrada =sc.nextLine();
+
+        }
+        return entrada;
+    }
 
     public static String formataNome(String nome){
         if (!nome.matches("^[a-zA-Z\\s]+$")) throw new IllegalArgumentException("O nome não pode conter números e nem caracteres especiais");

@@ -24,10 +24,6 @@ public class Estoque {
       produtosDisponiveis.put(produto,quantidade);
     }
     public void atualizarProdutoEstoque(int quantidade, int codigo){
-        String quantidadeString = Integer.toString(quantidade);
-        if (!quantidadeString.matches("[0-9]+")){
-            throw new NumberFormatException("A quantidade deve conter apenas numeros");
-        }
         for (Produto produto:produtosDisponiveis.keySet()) {
             if (produto.getCodigoProduto()==codigo){
                 int novaQuantidade = produtosDisponiveis.get(produto)+quantidade;
@@ -38,29 +34,7 @@ public class Estoque {
         throw new NullPointerException("Esse código não está relacionado com nenhum produto");
         }
 
-    public void retirarUnidadeProdutoEstoque(int codigo,int quantidade){
-        for (Produto produto:produtosDisponiveis.keySet()) {
-            if (produto.getCodigoProduto()==codigo){
-                if (produtosDisponiveis.get(produto)>quantidade){
-                    int novaQuantidade = produtosDisponiveis.get(produto)-quantidade;
-                    produtosDisponiveis.replace(produto,novaQuantidade);
-                } else if (produtosDisponiveis.get(produto) == quantidade) {
-                    removerProdutoEstoque(codigo);
-                }else throw new IllegalArgumentException("Essa quantidade está indisponível");
-                return;
-            }
-        }
-        throw new NullPointerException("Esse código não está relacionado com nenhum produto");
-    }
-    private boolean removerProdutoEstoque(int codigo){
-        for (Produto produto:produtosDisponiveis.keySet()) {
-            if (produto.getCodigoProduto()==codigo){
-                produtosDisponiveis.remove(produto);
-                return true;
-            }
-        }
-        throw new NullPointerException("Model.Produto não está no estoque");
-    }
+
 
 
     public Map<Produto,Integer> getProdutosDisponiveis() {

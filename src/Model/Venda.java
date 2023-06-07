@@ -58,7 +58,7 @@ public class Venda {
         vendas.add(venda);
     }
     public String mostrarVenda(){
-        return "Model.Vendedor: "+vendedor.getNome()+"\nModel.Cliente: "+cliente.getNome()+"\nData da compra: "+dataCompra
+        return "Vendedor: "+vendedor.getNome()+"\nCliente: "+cliente.getNome()+"\nData da compra: "+dataCompra
                 +"\nCódigo produto: "+produto.getCodigoProduto()+"\nNome do Model.Produto: "+produto.getNome()+"\nPreço unitário: "+ EntradasController.formataPreco(produto.getPreco())+
                 "\nQuantidade: "+quantidade+"\nValor total da compra: "+ EntradasController.formataPreco(totalCompra);
     }
