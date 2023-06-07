@@ -26,6 +26,7 @@ public class LojaView {
                 switch (menuView.getOpcao()) {
                     case 1 -> {
                         clienteView.cadastrarCliente();
+                        vendedorView.setVendedor();
                         menuFluxoCliente();
                     }
                     case 2 -> {
@@ -45,7 +46,9 @@ public class LojaView {
                                     menuPrincipal();
                                 }
                             }
-                            case "cliente" -> menuFluxoCliente();
+                            case "cliente" ->{
+                                vendedorView.setVendedor();
+                                menuFluxoCliente();}
                             case "vendedor" -> menuFluxoVendedor();
                         }
                     }
@@ -63,7 +66,6 @@ public class LojaView {
     }
 
     public void menuFluxoCliente() {
-        vendedorView.setVendedor();
         System.out.println("Olá sou o(a) " + vendedorView.getVendedor().getNome() + ",serei responsável pela sua venda!");
         while (true){
             menuView.mostrarOpcoes(menuView.getOpcoesTipoMenuCliente());

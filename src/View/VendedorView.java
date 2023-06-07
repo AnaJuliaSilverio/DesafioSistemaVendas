@@ -43,7 +43,8 @@ public class VendedorView {
         vendedorController.comprasPorVendedor(email);
     }
     public void cadastrarVendedor(){
-        vendedorController.cadastrarVendedor(lerInformacoesVendedor());
+        vendedor = lerInformacoesVendedor();
+        vendedorController.cadastrarVendedor(vendedor);
     }
     public Vendedor lerInformacoesVendedor(){
         vendedor = new Vendedor();
@@ -58,6 +59,7 @@ public class VendedorView {
         vendedor.setIdade( EntradasController.verificaQuantidade(sc.next()));
         System.out.println("Digite sua senha: -a senha deve no minimo ter 5 caracteres,sendo uma letra maiúscula e um caracter especial");
         vendedor.setSenha(EntradasController.verificaSenha(sc.next()));
+        vendedor.setIdVendedor();
         return vendedor;
     }
 

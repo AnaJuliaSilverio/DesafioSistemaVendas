@@ -17,12 +17,12 @@ public class VendedorController {
     }
 
     public void cadastrarVendedor(Vendedor vendedor){
-        vendedor.adicionarVendedor(vendedor);
+        this.vendedor.adicionarVendedor(vendedor);
     }
 
     public Vendedor turnoDaVez(){
         Random random = new Random();
-        int idvendedoraleatorio = random.nextInt(Vendedor.getContidVendedor())+1;
+        int idvendedoraleatorio = random.nextInt(vendedor.getVendedores().size())+1;
         for (Vendedor vendedor: vendedor.getVendedores()){
             if (vendedor.getIdVendedor()==idvendedoraleatorio) return vendedor;
         }
@@ -33,6 +33,7 @@ public class VendedorController {
             for (Venda venda: vendasController.getVenda().getVendas()) {
                 if (venda.getVendedor().getEmail().equals(email)){
                     System.out.println( venda.mostrarVenda());
+                    System.out.println();
                 }
             }
         }catch (NullPointerException erro){

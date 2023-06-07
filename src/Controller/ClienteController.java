@@ -37,6 +37,7 @@ public class ClienteController {
             for (Venda venda: vendasController.getVenda().getVendas()) {
                 if (venda.getCliente().getCpf().equals(cpf)){
                     System.out.println(venda.mostrarVenda());
+                    System.out.println();
                 }
             }
         }catch (NullPointerException erro){

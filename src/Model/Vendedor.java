@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.VendedorController;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class Vendedor extends Pessoa{
     }
 
     public void adicionarVendedor(Vendedor vendedor){
+
         for (Vendedor v:vendedores) {
             if (v.getCpf().equals(vendedor.getCpf())||v.getEmail().equals(vendedor.getEmail())) throw new PessoaCadastrada("Vendedor já cadastrado");
         }
@@ -35,6 +38,11 @@ public class Vendedor extends Pessoa{
 
     public int getIdVendedor() {
         return idVendedor;
+    }
+
+    public void setIdVendedor() {
+        Vendedor.contidVendedor++;
+        this.idVendedor = Vendedor.contidVendedor;
     }
 
     @Override

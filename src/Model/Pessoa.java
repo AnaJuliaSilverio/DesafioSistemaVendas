@@ -43,9 +43,7 @@ public abstract class Pessoa {
 
     public void setCpf(String cpf)  {
             EntradasController.validaCPF(cpf);
-            EntradasController.formataCPF(cpf);
             this.cpf = cpf;
-
     }
 
     public String getEmail() {
@@ -74,6 +72,6 @@ public abstract class Pessoa {
         return idade == pessoa.idade && Objects.equals(nome, pessoa.nome) && Objects.equals(cpf, pessoa.cpf) && Objects.equals(email, pessoa.email);
     }
     public String mostrar(){
-        return "Nome: "+nome+"\nIdade: "+idade+"\nCPF: "+cpf+"\nEmail: "+email;
+        return "Nome: "+nome+"\nIdade: "+idade+"\nCPF: "+EntradasController.formataCPF(cpf)+"\nEmail: "+email;
     }
 }

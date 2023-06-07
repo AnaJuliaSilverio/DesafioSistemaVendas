@@ -14,16 +14,16 @@ public class VendaController {
 
     public void vender(Vendedor vendedor, Cliente cliente, Produto produto, int quantidade){
         try {
-            venda = new Venda();
-            venda.setVendedor(vendedor);
-            venda.setCliente(cliente);
-            venda.setProduto(produto);
+            Venda venda1 = new Venda();
+            venda1.setVendedor(vendedor);
+            venda1.setCliente(cliente);
+            venda1.setProduto(produto);
             estoque.retirarUnidadeProdutoEstoque(produto.getCodigoProduto(),quantidade);
-            venda.setQuantidade(quantidade);
-            venda.setTotalCompra(produto.getPreco()*quantidade);
-            venda.adicionarVenda(venda);
+            venda1.setQuantidade(quantidade);
+            venda1.setTotalCompra(produto.getPreco()*quantidade);
+            venda.adicionarVenda(venda1);
             System.out.println("--------------NOTA FISCAL------------------");
-            System.out.println(venda.mostrarVenda());
+            System.out.println(venda1.mostrarVenda());
             System.out.println("--------------------------------------");
         }catch (NullPointerException | NumberFormatException erro){
             System.out.println(erro.getMessage());
