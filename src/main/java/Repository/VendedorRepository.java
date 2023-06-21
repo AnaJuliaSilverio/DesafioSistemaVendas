@@ -2,6 +2,7 @@ package Repository;
 
 import Model.PessoaCadastrada;
 import Model.Vendedor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,20 @@ public class VendedorRepository {
     }
 
     public void adicionarVendedor(Vendedor vendedor){
+        criptografarSenha(vendedor);
         vendedores.add(vendedor);
+    }
+    public void criptografarSenha(Vendedor vendedor){
+        String hashSenha = BCrypt.hashpw(vendedor.getSenha(), BCrypt.gensalt());
+        vendedor.setSenha(hashSenha);
     }
     public Vendedor procuraVendedorEmail(String email,String senha) {
         for (Vendedor v:vendedores) {
-            if (v.getEmail().equals(email)&& v.getSenha().equals(senha))return v;
+            if (v.getEmail().equals(email)&& verificaSenhaCriptografada(v,senha))return v;
         }
         return null;
+    }
+    public boolean verificaSenhaCriptografada(Vendedor vendedor,String senha){
+        return BCrypt.checkpw(senha,vendedor.getSenha());
     }
 }
